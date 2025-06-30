@@ -1,0 +1,97 @@
+/* General Global Styles */
+body {
+    font-family: Arial, sans-serif; /* Sets the font family for the entire page */
+    margin: 0; /* Removes default margin */
+    padding: 0; /* Removes default padding */
+    box-sizing: border-box; /* Ensures padding and border are included in element's total width/height */
+}
+
+header {
+    background-color: #333; /* Sets background color for the header */
+    color: white; /* Sets text color to white */
+    padding: 15px 20px; /* Adds padding inside the header */
+    display: flex; /* Uses flexbox layout */
+    justify-content: space-between; /* Distributes space between items (e.g., logo and navigation) */
+    align-items: center; /* Vertically centers items in the header */
+}
+
+header h1 {
+    margin: 0; /* Removes default margin around the header title */
+}
+
+nav a {
+    color: white; /* Sets link color to white */
+    text-decoration: none; /* Removes underline from links */
+    margin: 0 15px; /* Adds horizontal space between links */
+    font-size: 16px; /* Sets font size for the links */
+}
+
+nav a:hover {
+    text-decoration: underline; /* Adds underline when hovering over links */
+}
+
+/* Hero Section */
+.hero {
+    background: url('https://images.pexels.com/photos/3729464/pexels-photo-3729464.jpeg?cs=srgb&dl=pexels-mikebirdy-3729464.jpg&fm=jpg/1920x500') no-repeat center center/cover; 
+    /* Sets a background image for the hero section, centered and covering the entire section */
+    color: white; /* Sets text color to white */
+    text-align: center; 
+    height:500px;/* Centers text horizontally */
+    padding: 190px 20px; /* Adds padding to the top/bottom and sides */
+}
+
+.hero h2 {
+    font-size: 2.5rem; /* Increases font size of the hero section title */
+}
+
+/* FAQ Section */
+.faq-section {
+    max-width: 800px; /* Limits the width of the FAQ section */
+    margin: 30px auto; /* Centers the FAQ section with a margin of 30px from top and bottom */
+    padding: 20px; /* Adds padding inside the FAQ section */
+    border: 1px solid #ddd; /* Adds a light border around the FAQ section */
+    border-radius: 5px; /* Rounds the corners of the FAQ section */
+    background-color: #f9f9f9; /* Sets a light background color for the FAQ section */
+    counter-reset: faq-counter; /* Initializes a counter to number the FAQ items */
+}
+
+.faq-section h2 {
+    text-align: center; /* Centers the FAQ section heading */
+    margin-bottom: 20px; /* Adds space below the FAQ heading */
+}
+
+.faq {
+    margin: 15px 0; /* Adds space between each FAQ item */
+}
+
+.faq h3 {
+    margin: 0; /* Removes margin around the FAQ question */
+    font-size: 18px; /* Sets font size for the FAQ question */
+    counter-increment: faq-counter; /* Increments the FAQ counter for each item */
+}
+
+.faq h3::before {
+    content: "FAQ " counter(faq-counter) ": "; /* Adds the FAQ number before the question text */
+    font-weight: bold; /* Makes the FAQ number bold */
+}
+
+.faq p {
+    margin: 5px 0 0; /* Adds margin to the FAQ answer for spacing */
+}
+
+/* Footer */
+.footer {
+    background-color: #333; /* Sets background color for the footer */
+    color: white; /* Sets text color to white */
+    padding: 20px; /* Adds padding inside the footer */
+    text-align: center; /* Centers text inside the footer */
+}
+
+.footer a {
+    color: #ffcc00; /* Sets link color to yellow */
+    text-decoration: none; /* Removes underline from footer links */
+}
+
+.footer a:hover {
+    text-decoration: underline; /* Adds underline when hovering over footer links */
+}

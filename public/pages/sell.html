@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell Your Car - CarConnect</title>
+    <link rel="stylesheet" href="../css/sell.css">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>CarConnect</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/browse">Buy Cars</a>
+            <a href="/sell">Sell Your Car</a>
+            <a href="/contact">Contact Us</a>
+        </nav>
+    </header>
+
+    <section class="form-container">
+        <h2>Sell Your Car</h2>
+        <form id="sellCarForm" enctype="multipart/form-data">
+            <label for="make">Car Make</label>
+            <input type="text" id="make" name="make" required>
+
+            <label for="model">Car Model</label>
+            <input type="text" id="model" name="model" required>
+
+            <label for="year">Manufacturing Year</label>
+            <input type="number" id="year" name="year" min="2000" max="2025" required>
+
+            <label for="price">Selling Price (₹)</label>
+            <input type="number" id="price" name="price" required>
+
+            <label for="ownerType">Ownership</label>
+            <select id="ownerType" name="ownerType" required>
+                <option value="First Owner">First Owner</option>
+                <option value="Second Owner">Second Owner</option>
+                <option value="Third Owner or More">Third Owner or More</option>
+            </select>
+
+            <label for="fuelType">Fuel Type</label>
+            <select id="fuelType" name="fuelType" required>
+                <option value="Petrol">Petrol</option>
+                <option value="Diesel">Diesel</option>
+                <option value="Electric">Electric</option>
+                <option value="Hybrid">Hybrid</option>
+            </select>
+
+            <label for="carImage">Upload Car Image</label>
+            <input type="file" id="carImage" name="carImage" accept="image/*" required>
+
+            <label for="contact">Contact Number</label>
+            <input type="tel" id="contact" name="contact" required pattern="[0-9]{10}" placeholder="Enter 10-digit number">
+
+            <label for="location">Location</label>
+            <input type="text" id="location" name="location" required placeholder="Enter your location (city/area)">
+
+            <button type="submit">Submit Listing</button>
+        </form>
+    </section>
+
+    <script>
+    document.getElementById("sellCarForm").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        const response = await fetch("/sell-car", { method: "POST", body: formData });
+        if (response.ok) {
+            alert("Car listed successfully!");
+            window.location.href = "/browse";
+        } else {
+            alert("Error listing car.");
+        }
+    });
+    </script>
+</body>
+</html>

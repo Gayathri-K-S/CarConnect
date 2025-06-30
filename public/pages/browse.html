@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Cars - CarConnect</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/browse.css">
+    <style>
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 60%;
+            max-width: 800px;
+            overflow-y: auto;
+        }
+        .modal-content img {
+            width: 100%;
+            max-width: 400px;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>CarConnect</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/browse">Buy Cars</a>
+            <a href="/sell">Sell Your Car</a>
+            <a href="/contact">Contact Us</a>
+        </nav>
+    </header>
+
+    <!-- Filters -->
+    <section class="filters">
+        <input type="text" id="search" placeholder="Search by Make or Model">
+        <select id="year">
+            <option value="">Year</option>
+            <script>
+                for (let y = new Date().getFullYear(); y >= 2000; y--) {
+                    document.write(`<option value="${y}">${y}</option>`);
+                }
+            </script>
+        </select>
+        <select id="fuelType">
+            <option value="">Fuel Type</option>
+            <option value="Petrol">Petrol</option>
+            <option value="Diesel">Diesel</option>
+            <option value="Electric">Electric</option>
+            <option value="Hybrid">Hybrid</option>
+        </select>
+        <select id="ownerType">
+            <option value="">Owner Type</option>
+            <option value="First">First Owner</option>
+            <option value="Second">Second Owner</option>
+            <option value="Third">Third Owner</option>
+        </select>
+        <input type="number" id="minPrice" placeholder="Min Price">
+        <input type="number" id="maxPrice" placeholder="Max Price">
+        <button onclick="applyFilters()">Apply Filters</button>
+    </section>
+
+    <section class="car-grid" id="carGrid"></section>
+
+    <!-- Modal for Car Details -->
+    <div id="carDetailsModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">Close</button>
+            <div id="carDetailsContent"></div>
+        </div>
+    </div>
+
+    <script>
+        async function fetchCars(filters = {}) {
+            const queryParams = new URLSearchParams(filters).toString();
+            const response = await fetch(`/api/cars?${queryParams}`);
+            return await response.json();
+        }
+
+        function applyFilters() {
+            const filters = {};
+
+            const makeModel = document.getElementById("search").value.trim();
+            const year = document.getElementById("year").value;
+            const fuelType = document.getElementById("fuelType").value;
+            const ownerType = document.getElementById("ownerType").value;
+            const minPrice = document.getElementById("minPrice").value;
+            const maxPrice = document.getElementById("maxPrice").value;
+
+            if (makeModel) filters.make = makeModel;
+            if (year) filters.year = year;
+            if (fuelType) filters.fuelType = fuelType;
+            if (ownerType) filters.ownerType = ownerType;
+            if (minPrice) filters.minPrice = minPrice;
+            if (maxPrice) filters.maxPrice = maxPrice;
+
+            updateCarGrid(filters);
+        }
+
+        async function updateCarGrid(filters = {}) {
+            const carGrid = document.getElementById("carGrid");
+            try {
+                const cars = await fetchCars(filters);
+                carGrid.innerHTML = cars.length > 0 
+                    ? cars.map(car => `
+                        <div class="car-card">
+                            <img src="${car.imagePath}" alt="${car.make} ${car.model}">
+                            <h3>${car.make} ${car.model}</h3>
+                            <button onclick="viewDetails('${car._id}')">View Details</button>
+                        </div>
+                    `).join("")
+                    : "<p>No cars found</p>";
+            } catch (error) {
+                console.error("Error fetching cars:", error);
+            }
+        }
+        async function viewDetails(carId) {
+    console.log("Car ID:", carId); // Debugging
+    const response = await fetch(`/api/car/${carId}`);
+    const car = await response.json();
+    if (car) {
+        const detailsHtml = `
+            <h2>${car.make} ${car.model} - ${car.year}</h2>
+            <p><strong>Fuel Type:</strong> ${car.fuelType}</p>
+            <p><strong>Owner Type:</strong> ${car.ownerType}</p>
+            <p><strong>Price:</strong> ₹${car.price}</p>
+            <p><strong>Location:</strong> ${car.location || 'N/A'}</p>
+            <p><strong>Contact:</strong> ${car.contact || 'N/A'}</p>
+            <img src="${car.imagePath}" alt="${car.make} ${car.model}">
+        `;
+        document.getElementById("carDetailsContent").innerHTML = detailsHtml;
+        document.getElementById("carDetailsModal").style.display = "flex";
+    } else {
+        alert("Car details not found.");
+    }
+}
+
+         function closeModal() {
+            document.getElementById("carDetailsModal").style.display = "none";
+        }
+
+        document.addEventListener("DOMContentLoaded", () => updateCarGrid());
+    </script>
+</body>
+</html>

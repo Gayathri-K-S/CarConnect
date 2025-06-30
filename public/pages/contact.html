@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarConnect - Contact Us</title>
+   <link rel="stylesheet" href="../css/contact.css">
+</head>
+<body>
+    <header>
+        <h1>CarConnect</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/browse">Buy Cars</a>
+            <a href="/sell">Sell Your Car</a>
+            <a href="/contact">Contact Us</a>
+        </nav>
+    </header>
+
+    <section class="contact-container">
+        <h2>Contact Us</h2>
+        <form id="contactForm" action="/submit-contact" method="POST">
+
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" placeholder="Enter your name" required>
+
+            <label for="email">Your Email</label>
+            <input type="text" id="email" name="email" placeholder="Enter your email" required>
+
+            <label for="message">Your Message</label>
+            <textarea id="message" name="message" rows="5" placeholder="Type your message here" required></textarea>
+
+            <button type="submit">Send Message</button>
+        </form>
+
+        <div class="contact-info">
+            <p>Email: <a href="mailto:support@carconnect.com">support@carconnect.com</a></p>
+            <p>Phone: +1 (123) 456-7890</p>
+            <p>Address: 1234 Elm Street, Springfield, USA</p>
+        </div>
+    </section>
+    <script>
+        document.getElementById("contactForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const message = document.getElementById("message").value.trim();
+            let isValid = true;
+            if (!/^[a-zA-Z\s]+$/.test(name)) {
+                alert("Please enter a valid name (letters and spaces only).");
+                isValid = false;
+            }
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert("Please enter a valid email address.");
+                isValid = false;
+            }
+            if (message.length < 10) {
+                alert("Message should be at least 10 characters long.");
+                isValid = false;
+            }
+            if (isValid) {
+                alert("Your message has been sent successfully!");
+                 // Allow form submission
+            }
+        });
+    </script>
+</body>
+</html>
